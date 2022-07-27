@@ -8,6 +8,14 @@ const commands = [];
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+ client.once('ready', () => {
+ 	console.log('Code Bot is Up and Running!');
+ });
+
+client.login(token);
+
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
