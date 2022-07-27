@@ -1,3 +1,5 @@
+//run 'node deploy-commands.js' when adding new commands
+
 const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
