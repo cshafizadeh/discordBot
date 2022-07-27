@@ -1,27 +1,21 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
+const fs = require('node:fs');
+const path = require('node:path');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord.js');
+const { clientId, guildId, token } = require('./config.json');
 
-// Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const commands = [];
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-client.once('ready', () => {
-	console.log('Code Bot is Up and Running!');
-});
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	commands.push(command.data.toJSON());
+}
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isChatInputCommand()) return;
+const rest = new REST({ version: '10' }).setToken(token);
 
-	const { commandName } = interaction;
-
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	} else if (commandName === 'server') {
-		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}\nThis Server was Created On: ${interaction.guild.createdAt}`);
-	} else if (commandName === 'user') {
-		await interaction.reply(`Your tag: ${interaction.user.tag}\nYour ID: ${interaction.user.id}`);
-	} else if (commandName === 'noah') {
-        await interaction.reply('loves man nuts');
-    }
-});
-
-client.login(token);
+rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+	.then(() => console.log('Successfully registered application commands.'))
+	.catch(console.error);
