@@ -31,8 +31,10 @@ module.exports = {
         const file = await getJSONResponse(pokemonResult.body);
         const isShiny = interaction.options.getBoolean('shiny');
         let pokemonImg = file.sprites.front_default;
+        let pokemonVariant = 'Normal';
         if (isShiny) {
             pokemonImg = file.sprites.front_shiny;
+            pokemonVariant = 'Shiny';
         }
         
 		const exampleEmbed = new EmbedBuilder()
@@ -40,6 +42,7 @@ module.exports = {
             .setTitle(`${file.name[0].toUpperCase() + file.name.substring(1)}`)
             .setURL('https://discord.js.org/')
             .addFields({ name: 'Type:', value: `${file.types[0].type.name[0].toUpperCase() + file.types[0].type.name.substring(1)}` })
+            .addFields({ name: 'Variant:', value: pokemonVariant, inline: true })
             .setImage(`${pokemonImg}`)
             .setTimestamp()
             .setFooter({ text: 'Wanna try? do /pokemon {name}', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
