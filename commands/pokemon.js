@@ -41,11 +41,12 @@ module.exports = {
             .setColor(0x0099FF)
             .setTitle(`${file.name[0].toUpperCase() + file.name.substring(1)}`)
             .setURL('https://discord.js.org/')
+            .setAuthor({ name: 'Pokemon', iconURL: 'https://cdn.pixabay.com/photo/2016/07/23/13/18/pokemon-1536849__480.png', url: 'https://pokeapi.co/docs/v2' })
             .addFields({ name: 'Type:', value: `${file.types[0].type.name[0].toUpperCase() + file.types[0].type.name.substring(1)}` })
             .addFields({ name: 'Variant:', value: pokemonVariant, inline: true })
             .setImage(`${pokemonImg}`)
             .setTimestamp()
-            .setFooter({ text: 'Wanna try? do /pokemon {name}', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+            .setFooter({ text: 'Wanna try? do /pokemon {name}', iconURL: 'https://cdn.pixabay.com/photo/2016/07/23/13/18/pokemon-1536849__480.png' });
 
         await interaction.reply({ embeds: [exampleEmbed] });
 	},
